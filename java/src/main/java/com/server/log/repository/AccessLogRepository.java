@@ -1,6 +1,6 @@
-package repository;
+package com.server.log.repository;
 
-import entity.Person;
+import com.server.log.entity.AccessLog;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * Created by Mher on 12/22/2015.
  */
 @Repository
-public interface PersonRepository extends CrudRepository<Person, Long> {
+public interface AccessLogRepository extends CrudRepository<AccessLog, Long> {
 }

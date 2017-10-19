@@ -1,7 +1,8 @@
-package repository;
+package com.server.log.repository;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -18,12 +19,13 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableJpaRepositories
+@ComponentScan("com.server.log")
 public class BeanConfiguration {
 
     @Bean
     public DataSource dataSource() {
         BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/city_university");
         ds.setUsername("root");
         ds.setPassword("root");
@@ -35,7 +37,7 @@ public class BeanConfiguration {
         LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
         lef.setDataSource(dataSource);
         lef.setJpaVendorAdapter(jpaVendorAdapter);
-        lef.setPackagesToScan("com.university.entity");
+        lef.setPackagesToScan("com/server/log/entity");
         return lef;
     }
     @Bean

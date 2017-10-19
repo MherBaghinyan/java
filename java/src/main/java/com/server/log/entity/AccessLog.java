@@ -1,4 +1,4 @@
-package entity;
+package com.server.log.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
  * Created by Mher on 12/22/2015.
  */
 @Entity
-public class Person implements Serializable {
+public class AccessLog implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -72,7 +72,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "AccessLog{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", birthDate=" + birthDate +

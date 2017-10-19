@@ -1,3 +1,5 @@
+package com.server.log;
+
 public class ArgsBean {
 
     private String startDate;

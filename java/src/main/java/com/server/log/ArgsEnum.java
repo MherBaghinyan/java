@@ -1,3 +1,5 @@
+package com.server.log;
+
 public enum ArgsEnum {
 
     START_DATE("startDate"),

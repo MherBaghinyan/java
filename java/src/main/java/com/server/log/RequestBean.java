@@ -1,3 +1,5 @@
+package com.server.log;
+
 import java.time.LocalDateTime;
 
 public class RequestBean {
