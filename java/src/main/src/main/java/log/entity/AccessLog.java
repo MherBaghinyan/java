@@ -1,4 +1,4 @@
-package com.server.log.entity;
+package log.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

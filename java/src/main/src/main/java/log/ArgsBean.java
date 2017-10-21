@@ -1,4 +1,4 @@
-package com.server.log;
+package log;
 
 public class ArgsBean {
 

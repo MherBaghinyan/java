@@ -1,6 +1,6 @@
-package com.server.log;
+package log;
 
-import com.server.log.DurationEnum;
+import log.DurationEnum;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

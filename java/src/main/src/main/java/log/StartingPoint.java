@@ -1,9 +1,9 @@
-package com.server.log;
+package log;
 
-import com.server.log.entity.ServerLogReader;
+import log.entity.ServerLogReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import com.server.log.repository.BeanConfiguration;
+import log.repository.BeanConfiguration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,20 +19,10 @@ public class StartingPoint {
         ServerLogReader serverLogReader = context
                 .getBean(ServerLogReader.class);
 
-        if (args == null || args.length == 0) {
-            System.out.println("Empty args...");
-            System.exit(0);
-        }
-
-        if (args.length == 3) {
-            System.out.println(args[0]);
-            System.out.println(args[1]);
-            System.out.println(args[2]);
-        }
 
         Map<String, String> argsMap = parseCommandLineArgs(args);
 
-        List<RequestBean> filteredItems = serverLogReader.readFromFile("access.log", argsMap);
+        List<RequestBean> filteredItems = serverLogReader.readFromFile(argsMap);
         System.out.println("Total items count = " + filteredItems.size());
     }
 

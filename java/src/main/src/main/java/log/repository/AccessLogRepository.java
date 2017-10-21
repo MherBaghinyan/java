@@ -1,6 +1,6 @@
-package com.server.log.repository;
+package log.repository;
 
-import com.server.log.entity.AccessLog;
+import log.entity.AccessLog;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
