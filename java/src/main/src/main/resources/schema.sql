@@ -1,5 +1,7 @@
-DROP TABLE IF EXISTS `access_log`;
-CREATE TABLE `access_log` (
+CREATE DATABASE access_log;
+
+DROP TABLE IF EXISTS `request_data`;
+CREATE TABLE `request_data` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `start_date` datetime,
   `ip` varchar(50),

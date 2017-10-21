@@ -3,6 +3,7 @@ package log.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Created by Mher on 12/22/2015.
@@ -14,71 +15,41 @@ public class AccessLog implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
-    private String name;
-    @Column(name = "date_of_birth")
-    private LocalDate birthDate;
-    private String gender;
-    private int age;
-    private String nationality;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+    private String ip;
 
+    public AccessLog(LocalDateTime localDateTime, String ip) {
+        this.startDate = localDateTime;
+        this.ip = ip;
+    }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public String getName() {
-        return name;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getIp() {
+        return ip;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Override
     public String toString() {
         return "AccessLog{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", birthDate=" + birthDate +
-                ", gender='" + gender + '\'' +
-                ", age=" + age +
-                ", nationality='" + nationality + '\'' +
+                ", ip='" + ip + '\'' +
+                ", startDate=" + startDate +
                 '}';
     }
 }

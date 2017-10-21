@@ -3,6 +3,8 @@ package log.entity;
 import log.ArgsEnum;
 import log.RequestBean;
 import log.Utils;
+import log.repository.AccessLogRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -18,10 +20,12 @@ public class ServerLogReader {
 
     @Value(value = "classpath:access.log")
     private Resource accessLog;
+    @Autowired
+    private AccessLogRepository accessLogRepository;
 
-    public List<RequestBean> readFromFile(Map<String, String> argsMap) {
-        List<RequestBean> logList = new ArrayList<>();
-        List<RequestBean> filteredLogList = new ArrayList<>();
+    public List<AccessLog> readFromFile(Map<String, String> argsMap) {
+        List<AccessLog> logList = new ArrayList<>();
+        List<AccessLog> filteredLogList = new ArrayList<>();
 
         BufferedReader br = null;
 
@@ -45,7 +49,7 @@ public class ServerLogReader {
                 String[] strArr = currentLine.split("\\|");
 
                 if (Utils.isLogDateValid(strArr[0], argsMap.get(ArgsEnum.START_DATE.getVar()), argsMap.get(ArgsEnum.DURATION.getVar()))) {
-                    RequestBean bean = new RequestBean(Utils.getLocalDateTime(strArr[0], Utils.LOG_DATE_FORMATTER),
+                    AccessLog bean = new AccessLog(Utils.getLocalDateTime(strArr[0], Utils.LOG_DATE_FORMATTER),
                             strArr[1]);
                     logList.add(bean);
                     System.out.println(strArr[0] + " | " + strArr[1]);
@@ -71,6 +75,7 @@ public class ServerLogReader {
                     .filter(item -> filteredMap.keySet().contains(item.getIp()))
                     .collect(Collectors.toList());
 
+            accessLogRepository.save(filteredLogList);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

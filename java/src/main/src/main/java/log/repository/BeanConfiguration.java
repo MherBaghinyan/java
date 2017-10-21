@@ -26,7 +26,7 @@ public class BeanConfiguration {
     public DataSource dataSource() {
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/city_university");
+        ds.setUrl("jdbc:mysql://localhost:3306/access_log");
         ds.setUsername("root");
         ds.setPassword("root");
         return ds;
