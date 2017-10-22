@@ -1,8 +1,8 @@
-package log.entity;
+package com.ef.entity;
 
-import log.ArgsEnum;
-import log.Utils;
-import log.repository.AccessLogRepository;
+import com.ef.ArgsEnum;
+import com.ef.Utils;
+import com.ef.repository.AccessLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

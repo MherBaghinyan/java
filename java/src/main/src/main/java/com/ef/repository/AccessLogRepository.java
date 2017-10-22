@@ -1,6 +1,6 @@
-package log.repository;
+package com.ef.repository;
 
-import log.entity.RequestData;
+import com.ef.entity.RequestData;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

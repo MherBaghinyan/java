@@ -1,16 +1,16 @@
-package log;
+package com.ef;
 
-import log.entity.RequestData;
-import log.entity.ServerLogReader;
+import com.ef.entity.RequestData;
+import com.ef.entity.ServerLogReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import log.repository.BeanConfiguration;
+import com.ef.repository.BeanConfiguration;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StartingPoint {
+public class Parser {
 
     public static void main(String[] args) {
 

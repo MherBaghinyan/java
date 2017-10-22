@@ -1,6 +1,4 @@
-package log;
-
-import log.DurationEnum;
+package com.ef;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

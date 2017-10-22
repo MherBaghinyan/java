@@ -1,4 +1,4 @@
-package log;
+package com.ef;
 
 public class ArgsBean {
 

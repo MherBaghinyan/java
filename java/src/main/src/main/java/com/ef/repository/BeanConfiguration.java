@@ -1,4 +1,4 @@
-package log.repository;
+package com.ef.repository;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableJpaRepositories
-@ComponentScan("log")
+@ComponentScan("com.ef")
 public class BeanConfiguration {
 
     @Bean
@@ -37,7 +37,7 @@ public class BeanConfiguration {
         LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
         lef.setDataSource(dataSource);
         lef.setJpaVendorAdapter(jpaVendorAdapter);
-        lef.setPackagesToScan("log/entity");
+        lef.setPackagesToScan("com/ef/entity");
         return lef;
     }
     @Bean
