@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
  * Created by Mher on 12/22/2015.
  */
 @Entity
-public class AccessLog implements Serializable {
+@Table(name = "request_data")
+public class RequestData implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,10 +19,12 @@ public class AccessLog implements Serializable {
     @Column(name = "start_date")
     private LocalDateTime startDate;
     private String ip;
+    private String comment;
 
-    public AccessLog(LocalDateTime localDateTime, String ip) {
-        this.startDate = localDateTime;
+    public RequestData(LocalDateTime startDate, String ip, String comment) {
+        this.startDate = startDate;
         this.ip = ip;
+        this.comment = comment;
     }
 
     public long getId() {
@@ -44,11 +47,20 @@ public class AccessLog implements Serializable {
         this.ip = ip;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
-        return "AccessLog{" +
+        return "RequestData{" +
                 "id=" + id +
                 ", ip='" + ip + '\'' +
+                ", comment='" + comment + '\'' +
                 ", startDate=" + startDate +
                 '}';
     }

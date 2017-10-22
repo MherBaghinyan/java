@@ -1,17 +1,14 @@
 package log.entity;
 
 import log.ArgsEnum;
-import log.RequestBean;
 import log.Utils;
 import log.repository.AccessLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,9 +20,9 @@ public class ServerLogReader {
     @Autowired
     private AccessLogRepository accessLogRepository;
 
-    public List<AccessLog> readFromFile(Map<String, String> argsMap) {
-        List<AccessLog> logList = new ArrayList<>();
-        List<AccessLog> filteredLogList = new ArrayList<>();
+    public List<RequestData> readFromFile(Map<String, String> argsMap) {
+        List<RequestData> logList = new ArrayList<>();
+        List<RequestData> filteredLogList = new ArrayList<>();
 
         BufferedReader br = null;
 
@@ -41,18 +38,14 @@ public class ServerLogReader {
             Map<String, Long> ipCounts = new HashMap<>();
 
             while ((currentLine = br.readLine()) != null) {
-                // when the limit of threshold is reached exit from the loop
-                if (thresHoldInValid) {
-                    break;
-                }
 
                 String[] strArr = currentLine.split("\\|");
 
                 if (Utils.isLogDateValid(strArr[0], argsMap.get(ArgsEnum.START_DATE.getVar()), argsMap.get(ArgsEnum.DURATION.getVar()))) {
-                    AccessLog bean = new AccessLog(Utils.getLocalDateTime(strArr[0], Utils.LOG_DATE_FORMATTER),
-                            strArr[1]);
+                    RequestData bean = new RequestData(Utils.getLocalDateTime(strArr[0], Utils.LOG_DATE_FORMATTER),
+                            strArr[1], strArr[4]);
                     logList.add(bean);
-                    System.out.println(strArr[0] + " | " + strArr[1]);
+                    System.out.println(strArr[0] + " | " + strArr[1]+ " | " + strArr[4]);
 
                     if (ipCounts.get(strArr[1]) != null) {
                         ipCounts.put(strArr[1], ipCounts.get(strArr[1]) + 1);
@@ -60,6 +53,10 @@ public class ServerLogReader {
                         ipCounts.put(strArr[1], 1L);
                     }
 
+                    // when the limit of threshold is reached exit from the loop
+                    if (thresHoldInValid) {
+                        break;
+                    }
                 }
             }
 

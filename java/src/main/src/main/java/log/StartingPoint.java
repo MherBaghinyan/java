@@ -1,6 +1,6 @@
 package log;
 
-import log.entity.AccessLog;
+import log.entity.RequestData;
 import log.entity.ServerLogReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -23,7 +23,7 @@ public class StartingPoint {
 
         Map<String, String> argsMap = parseCommandLineArgs(args);
 
-        List<AccessLog> filteredItems = serverLogReader.readFromFile(argsMap);
+        List<RequestData> filteredItems = serverLogReader.readFromFile(argsMap);
         System.out.println("Total items count = " + filteredItems.size());
     }
 
