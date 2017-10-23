@@ -1,14 +1,15 @@
 package com.ef;
 
-import com.ef.entity.RequestData;
 import com.ef.entity.ServerLogReader;
+import com.ef.repository.BeanConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import com.ef.repository.BeanConfiguration;
+import org.springframework.core.env.SimpleCommandLinePropertySource;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Parser {
 
@@ -18,25 +19,19 @@ public class Parser {
                 BeanConfiguration.class);
 
         ServerLogReader serverLogReader = context
-                .getBean(ServerLogReader.class);
-
+                .getBean(ServerLogReader.class, args);
 
         Map<String, String> argsMap = parseCommandLineArgs(args);
 
-        List<RequestData> filteredItems = serverLogReader.readFromFile(argsMap);
-        System.out.println("Total items count = " + filteredItems.size());
+        serverLogReader.readFromFile(argsMap);
     }
 
     private static Map<String, String> parseCommandLineArgs(String[] args) {
 
-        Map<String, String> argsMap = new HashMap<>();
+        SimpleCommandLinePropertySource ps = new SimpleCommandLinePropertySource(args);
 
-        for (String item : args) {
-            String[] values = item.split("(--)|\\=");
-            argsMap.put(values[1], values[2]);
-        }
-
-        return argsMap;
+        return Arrays.stream(ps.getPropertyNames())
+                .collect(Collectors.toMap(p -> p, ps::getProperty));
     }
 
 }

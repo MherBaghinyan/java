@@ -1,7 +1,7 @@
 package com.ef.entity;
 
 import com.ef.ArgsEnum;
-import com.ef.Utils;
+import com.ef.helpers.Utils;
 import com.ef.repository.AccessLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +20,8 @@ public class ServerLogReader {
     @Autowired
     private AccessLogRepository accessLogRepository;
 
-    public List<RequestData> readFromFile(Map<String, String> argsMap) {
+    public void readFromFile(Map<String, String> argsMap) {
         List<RequestData> logList = new ArrayList<>();
-        List<RequestData> filteredLogList = new ArrayList<>();
 
         BufferedReader br = null;
 
@@ -32,8 +31,7 @@ public class ServerLogReader {
             InputStream stream = accessLog.getInputStream();
 
             String currentLine;
-            br = new BufferedReader(new InputStreamReader(stream));//file name with path
-            boolean thresHoldInValid = (logList.size() >= threshold);
+            br = new BufferedReader(new InputStreamReader(stream));
 
             Map<String, Long> ipCounts = new HashMap<>();
 
@@ -45,17 +43,11 @@ public class ServerLogReader {
                     RequestData bean = new RequestData(Utils.getLocalDateTime(strArr[0], Utils.LOG_DATE_FORMATTER),
                             strArr[1], strArr[4]);
                     logList.add(bean);
-                    System.out.println(strArr[0] + " | " + strArr[1]+ " | " + strArr[4]);
 
                     if (ipCounts.get(strArr[1]) != null) {
                         ipCounts.put(strArr[1], ipCounts.get(strArr[1]) + 1);
                     } else {
                         ipCounts.put(strArr[1], 1L);
-                    }
-
-                    // when the limit of threshold is reached exit from the loop
-                    if (thresHoldInValid) {
-                        break;
                     }
                 }
             }
@@ -66,13 +58,14 @@ public class ServerLogReader {
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             System.out.println("Filtered IPs " + Arrays.toString(filteredMap.keySet().toArray()));
-            System.out.println("Filtered IPs frequency " + Arrays.toString(filteredMap.values().toArray()));
 
-            filteredLogList = logList.stream()
+            List<RequestData> filteredLogList = logList.stream()
                     .filter(item -> filteredMap.keySet().contains(item.getIp()))
                     .collect(Collectors.toList());
 
+            // save the filtered data to mysql
             accessLogRepository.save(filteredLogList);
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -84,8 +77,6 @@ public class ServerLogReader {
                 ex.printStackTrace();
             }
         }
-
-        return filteredLogList;
     }
 
 }
