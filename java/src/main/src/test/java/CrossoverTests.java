@@ -1,6 +1,5 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.Socket;
+import java.util.*;
 
 /**
  * Created by Gebruiker on 12/9/2017.
@@ -8,40 +7,193 @@ import java.util.Map;
 public class CrossoverTests {
 
     public static void main(String args []) {
-        int[] elements = new int[7];
-        int[] sorted = new int[elements.length];
-        Map<Integer, Integer> map = new HashMap<>();
+
+//        sortTest();
+
+        String[] expressions = {"<>>>", "<>>>>"};
+
+        int[] maxReplacements = {2, 2};
+
+        balancedOrNot(expressions, maxReplacements);
+    }
+
+    /*
+    Consider an array of n decimal integers named elements. We want to rearrange elements according to the following rules:
+
+Sort the integers in ascending order by the number of 1's in their binary representations. For example, (7)10 → (111)2 and (8)10 → (1000)2, so 8 (which has one 1 in binary) would be ordered before 7 (which has three 1's in binary).
+
+Two or more integers having the same number of 1's in their binary representations are ordered by increasing decimal value. For example, (5)10 → (101)2 and (6)10 → (110)2 both contain two 1's in their binary representation, so 5 would be ordered before 6 because it has the smaller decimal value.
+
+Complete the rearrange function in the editor below. It has one parameter: an array of n integers, elements. The function must sort the elements array according to the rules above and return the sorted array.
+
+Input Format
+
+The internal test cases read the following input from stdin and passes it to the function:
+
+The first line contains an integer, n, denoting the number of integers in elements.
+
+Each line i of the n subsequent lines (where 0 ≤ i < n) contains an integer describing elementsi.
+
+Constraints
+
+1 ≤ n ≤ 10^5
+
+1 ≤ elementsi ≤ 10^9
+
+Output Format
+
+Return an array of n integers denoting the sorted elements.
+
+Sample Input 0
+
+3
+1
+2
+3
+
+
+Sample Output 0
+
+1
+2
+3
+
+
+Explanation 0
+
+Given elements = [1, 2, 3]:
+
+(1)10 → (1)2
+
+(2)10 → (10)2
+
+(3)10 → (11)2
+
+The decimal integers 1 and 2 both have one 1 in their binary representation, so we order them by increasing decimal value (i.e., 1 < 2). The decimal integer 3 has two 1's in its binary representation, so we order it after 1 and 2. We then return elements = [1, 2, 3] as our sorted array.
+
+Sample Input 1
+
+5
+5
+3
+7
+10
+14
+
+
+Sample Output 1
+
+3
+5
+10
+7
+14
+
+
+Explanation 1
+
+Given elements = [1, 2, 3]:
+
+(5)10 → (101)2
+
+(3)10 → (11)2
+
+(7)10 → (111)2
+
+(10)10 → (1010)2
+
+(14)10 → (1110)2
+
+The decimal integers 5, 3, and 10 have two 1's in their binary representations, so we order them by increasing decimal value (i.e., 3 < 5 < 10). The decimal integers 7 and 14 have three 1's in their binary representations, so we place them after 3, 5, and 10 in increasing decimal order (i.e., 7 < 14). We then return elements = [3, 5, 10, 7, 14] as our sorted array.
+For example:
+
+Input	Result
+3
+1
+2
+3
+1
+2
+3
+
+     */
+    private static void sortTest() {
+
+        int[] elements = {3,
+                1,
+                2,
+                3};
+
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
 
         for (int i = 0; i< elements.length; i++) {
             String binaryString = Integer.toBinaryString(elements[i]);
-            int count = binaryString.length() - binaryString.replace("1", "").length();
-            System.out.println(count);
-            sorted[i] = count;
+            int count = binaryString.length() - binaryString.replace("1",
+                    "").length();
             map.put(elements[i], count);
         }
 
-        Object[] a = map.entrySet().toArray();
-        Arrays.sort(a, (o1, o2) -> ((Map.Entry<String, Integer>) o2).getValue()
-                .compareTo(((Map.Entry<String, Integer>) o1).getValue()));
+        class ValueComparator implements Comparator<Integer>{
 
-        int s = 0;
-        for (Map.Entry<Integer, Integer> entry : map.entrySet())
-        {
-            sorted[s] = entry.getKey();
+            HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+            public ValueComparator(HashMap<Integer, Integer> map){
+                this.map.putAll(map);
+            }
+
+            @Override
+            public int compare(Integer s1, Integer s2) {
+                if(map.get(s1) >= map.get(s2)){
+                    return 1;
+                }else{
+                    return -1;
+                }
+            }
         }
 
+        Comparator<Integer> comparator = new ValueComparator(map);
+
+        TreeMap<Integer, Integer> result = new TreeMap<Integer, Integer> (comparator);
+        result.putAll(map);
+
+        int s = 0;
+        int[] sorted = new int[result.entrySet().size()];
+
+        for (Map.Entry<Integer, Integer> entry : result.entrySet())
+        {
+            sorted[s++] = entry.getKey();
+        }
+
+        System.out.println(sorted);
     }
+
 
     /**
      * Complete the function below.
      * DO NOT MODIFY anything outside this method.
      */
-    static void balancedOrNot(String[] expressions, int[] maxReplacements)
+    private static void balancedOrNot(String[] expressions, int[] maxReplacements)
     {
+        int[] balancedArray = new int[maxReplacements.length];
 
+        for (int i = 0; i < expressions.length; i++) {
+
+            String expression = expressions[i];
+
+            while (expression.contains("<>")) {
+                expression = expression.replace("<>", "");
+            }
+
+            if (expression.length() > maxReplacements[i]) {
+                balancedArray[i] = 0;
+            } else {
+                balancedArray[i] = 1;
+            }
+        }
+
+        System.out.println(Arrays.toString(balancedArray));
 
     }
-
 
 
     /*

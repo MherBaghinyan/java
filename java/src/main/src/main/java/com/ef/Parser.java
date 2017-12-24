@@ -6,9 +6,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Parser {
@@ -24,6 +22,10 @@ public class Parser {
         Map<String, String> argsMap = parseCommandLineArgs(args);
 
         serverLogReader.readFromFile(argsMap);
+
+
+
+
     }
 
     private static Map<String, String> parseCommandLineArgs(String[] args) {
