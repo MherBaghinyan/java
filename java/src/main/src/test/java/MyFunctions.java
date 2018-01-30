@@ -1,9 +1,12 @@
 package com.sumac;
 
+import org.junit.Test;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
-//https://stackoverflow.com/questions/4720271/find-a-pair-of-elements-from-an-array-whose-sum-equals-a-given-number
+import static org.junit.Assert.assertEquals;
+
 public class MyFunctions {
 
     public static void main(String args []) {
@@ -11,6 +14,7 @@ public class MyFunctions {
         MyFunctions func = new MyFunctions();
         int result = func.secondLargest(new int[] {5, 6, 7, 11, 3, 4, 3, 0});
         System.out.println(result);
+
     }
 
     /**
@@ -25,12 +29,26 @@ public class MyFunctions {
      */
     public int secondLargest(final int[] ia) {
 
-        List<Integer> list = Arrays.stream(ia).boxed()
-                .distinct().sorted(Comparator.comparing(Integer::intValue).reversed()).collect(Collectors.toList());
+//        List<Integer> list = Arrays.stream(ia).boxed()
+//                .distinct()
+//                .sorted(Comparator.comparing(Integer::intValue).reversed())
+//                .collect(Collectors.toList());
 
-        if(list.size() > 1) {
-            System.out.println(list);
-            return list.get(1);
+        int [] bucket = new int[ia.length + 1];
+
+        for (int item : ia) {
+            bucket[item]++;
+        }
+
+        int outPos=0;
+        for (int i=0; i<bucket.length; i++) {
+            for (int j=0; j<bucket[i]; j++) {
+                ia[outPos++]=i;
+            }
+        }
+
+        if(ia.length > 1) {
+            return ia[ia.length - 2];
         }
         return 0;
     } // secondLargest
@@ -51,7 +69,18 @@ public class MyFunctions {
      */
     public List<Pair> findPairs(int[] ia, int target) {
 
-        return new ArrayList<>();
+        Map<Integer, Integer> pairsMap = new HashMap<>();
+        List<Pair> result = new ArrayList<>();
+
+        Arrays.stream(ia).boxed().forEach(item -> {
+            if(pairsMap.containsKey(item)) {
+                result.add(new Pair(item, pairsMap.get(item)));
+            } else {
+                pairsMap.put(target - item, item);
+            }
+        });
+
+        return result;
     } // findPairs
 
     public static class Pair {
@@ -88,6 +117,14 @@ public class MyFunctions {
                 return false;
             return true;
         } // equals
+
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "first=" + first +
+                    ", second=" + second +
+                    '}';
+        }
     }
 
     /**
@@ -114,4 +151,31 @@ public class MyFunctions {
         }
         return result;
     } // divisible
+
+
+    @Test
+    public void divisibleMethodWithReturnValuesTest() {
+
+        Pair[] toBeTested = new Pair[]{new Pair(10, 20), new Pair(7, 25)};
+
+        List<Pair> shouldBeEquals = new ArrayList<>();
+        shouldBeEquals.add(new Pair(10, 20));
+
+        // assert with return value
+        assertEquals(shouldBeEquals, divisible(toBeTested, 5));
+    }
+
+    @Test
+    public void divisibleMethodEmptyReturnTest() {
+
+        Pair[] toBeTested = new Pair[]{new Pair(10, 20), new Pair(7, 25)};
+
+        List<Pair> shouldBeEquals = new ArrayList<>();
+
+        // assert returns empty list
+        assertEquals(shouldBeEquals, divisible(toBeTested, 3));
+    }
+
 }
+
+
