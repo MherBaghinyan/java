@@ -1,5 +1,6 @@
 import java.net.Socket;
 import java.util.*;
+import java.util.function.ObjDoubleConsumer;
 
 /**
  * Created by Gebruiker on 12/9/2017.
